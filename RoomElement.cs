@@ -1,3 +1,4 @@
+
 namespace HeartbeatHunter
 {
   /// <summary>
@@ -5,7 +6,7 @@ namespace HeartbeatHunter
   ///
   ///   A class representing an element of the room that can be observed :)
   /// </summary>
-  class LocationElement
+  class RoomElement
   {
     public string Name { get; set; }
     public string Description { get; set; }
@@ -16,3 +17,4 @@ namespace HeartbeatHunter
     }
   }
 }
+
