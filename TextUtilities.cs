@@ -1,3 +1,4 @@
+
 namespace HeartbeatHunter
 {
   /// <summary>
@@ -89,3 +90,4 @@ namespace HeartbeatHunter
     }
   }
 }
+
