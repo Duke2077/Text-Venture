@@ -1,3 +1,4 @@
+
 namespace HeartbeatHunter
 {
   /// <summary>
@@ -8,8 +9,8 @@ namespace HeartbeatHunter
   static class TextBuffer
   {
     private static string outputBuffer; /**< the text content */
-    
-    
+
+
     /// <summary>
     ///   Adds text to the buffer.
     /// </summary>
@@ -34,3 +35,4 @@ namespace HeartbeatHunter
     }
   }
 }
+
