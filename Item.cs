@@ -1,3 +1,4 @@
+
   namespace HeartbeatHunter
   {
     /// <summary>
@@ -14,3 +15,4 @@
       public int SlotsRequired { get; set; } = 1; /**< Slots required to take this item */
     }
   }
+
