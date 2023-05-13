@@ -1,4 +1,4 @@
-  namespace TheHyperionProject
+  namespace HeartbeatHunter
   {
     /// <summary>
     ///   the command processor class
@@ -38,11 +38,14 @@
             case "help":
               ShowHelp();
               break;
+            case "examine":
+              Player.GetCurrentLocation().Describe(arguments);
+              break;
             case "move":
               Player.Move(arguments);
               break;
             case "look":
-              Player.GetCurrentRoom().Describe();
+              Player.GetCurrentLocation().Describe();
               break;
             case "pick up":
               Player.PickUpItem(arguments);
@@ -54,7 +57,7 @@
               Player.DisplayInventory();
               break;
             case "whereami":
-              Player.GetCurrentRoom().ShowRoomName();
+              Player.GetCurrentLocation().ShowLocationName();
               break;
             default:
               TextBuffer.AddTextToBuffer("Unrecognized command.");          
@@ -87,6 +90,7 @@
         TextBuffer.AddTextToBuffer("-------------------");
         TextBuffer.AddTextToBuffer("help");
         TextBuffer.AddTextToBuffer("exit");
+        TextBuffer.AddTextToBuffer("examine");
         TextBuffer.AddTextToBuffer("move [north, south, east, west]");
         TextBuffer.AddTextToBuffer("look");
         TextBuffer.AddTextToBuffer("pick up");

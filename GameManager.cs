@@ -1,7 +1,7 @@
   //using System; //without this using line, it still works
                   //within and outside of VSCode 
 
-  namespace TheHyperionProject
+  namespace HeartbeatHunter
   {
     /// <summary>
     ///   The GameManager class.
@@ -20,15 +20,15 @@
       public static void ShowTitleScreen()
       {
         Console.Clear();
-        Console.WriteLine(TextUtilities.WordWrap("*** The Hyperion Project *** " +
+        Console.WriteLine(TextUtilities.WordWrap("*** HEARTBEAT HUNTER *** " +
                                                  "A Text-based Adventure Game.\n",
                                                  Console.WindowWidth));
 
-        Console.WriteLine(TextUtilities.WordWrap("Police Station, 2F. The second floor of the Police Station contains more long hallways and office rooms, some of which are locked - and the Chief's Room cannot be accessed in Leon's Story. Key Items on this floor include the Lion and Unicorn Emblem, second floor map, Lightning Hawk Magnum or Submachine Gun, two Electronic Locks, Detonator Battery, Weapons Locker Keycard, Heart Key (Claire Only) and Red Jewel.",
+        Console.WriteLine(TextUtilities.WordWrap("Welcome to Heartbeat Hunter.",
                                                  Console.WindowWidth));
 
         Console.WriteLine ("Info: You may type 'help' at any " +
-                           "time to see a list of available commands.");
+                           "time\nto see a list of available commands.");
         Console.Write ("\nPress a key to begin");
 
         Console.CursorVisible = false;
@@ -47,7 +47,7 @@
       /// </summary>
       public static void StartGame()
       {
-        Player.GetCurrentRoom().Describe();
+        Player.GetCurrentLocation().Describe();
         TextBuffer.Display();
       }
 
@@ -80,21 +80,21 @@
       /// </summary>
       public static void ApplyRules()
       {
-        if ((Level.Rooms[0, 0].ProvideItem("Red Ball") != null) &&
-          (Level.Rooms[1, 0].ProvideItem("Blue Ball") != null) &&
-            (Level.Rooms[1, 1].ProvideItem("Yellow Ball") != null) &&
-              (Level.Rooms[0, 1].ProvideItem("Green Ball") != null))
-        {
-          EndGame ("Well done! You win!");
-        }
+        //if ((Level.Rooms[0, 0].ProvideItem("Red Ball") != null) &&
+        //  (Level.Rooms[1, 0].ProvideItem("Blue Ball") != null) &&
+          //  (Level.Rooms[1, 1].ProvideItem("Yellow Ball") != null) &&
+            //  (Level.Rooms[0, 1].ProvideItem("Green Ball") != null))
+        //{
+         // EndGame ("Well done! You win!");
+        //}
 
         if (Player.GetInventoryItem("Key") != null)
         {
-          Level.Rooms[0, 0].UnlockExit(Direction.South); //unlock door to the south in red room
-          Level.Rooms[0, 0].Description = "You have entered the red room.";
+          //Level.Rooms[0, 0].AddExit(Direction.South); //unlock door to the south in red room
+          //Level.Rooms[0, 0].Description = "You have entered the red room.";
 
-          Level.Rooms[0, 1].UnlockExit(Direction.North); //unlock door to the north in green room
-          Level.Rooms[0, 1].Description = "You have entered the green room.";
+          //Level.Rooms[0, 1].AddExit(Direction.North); //unlock door to the north in green room
+          //Level.Rooms[0, 1].Description = "You have entered the green room.";
         }
 
         if (Player.PlayedMoves > 10)
