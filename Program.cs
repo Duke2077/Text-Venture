@@ -1,3 +1,4 @@
+
 namespace HeartbeatHunter
 {
 
@@ -19,7 +20,7 @@ namespace HeartbeatHunter
 
       Level.InitializeLevel();
       GameManager.StartGame();
-      
+
       while (GameIsOn)
       {
         Console.WriteLine("Please enter a command (or type \"exit\" to finish the game)");
