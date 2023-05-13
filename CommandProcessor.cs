@@ -1,3 +1,4 @@
+
   namespace HeartbeatHunter
   {
     /// <summary>
@@ -39,13 +40,13 @@
               ShowHelp();
               break;
             case "examine":
-              Player.GetCurrentLocation().Describe(arguments);
+              Player.GetCurrentRoom().Describe(arguments);
               break;
             case "move":
               Player.Move(arguments);
               break;
             case "look":
-              Player.GetCurrentLocation().Describe();
+              Player.GetCurrentRoom().Describe();
               break;
             case "pick up":
               Player.PickUpItem(arguments);
@@ -57,10 +58,10 @@
               Player.DisplayInventory();
               break;
             case "whereami":
-              Player.GetCurrentLocation().ShowLocationName();
+              Player.GetCurrentRoom().ShowRoomName();
               break;
             default:
-              TextBuffer.AddTextToBuffer("Unrecognized command.");          
+              TextBuffer.AddTextToBuffer("Unrecognized command.");
               break;
           }
         }
@@ -78,7 +79,7 @@
 
         TextBuffer.Display();
       }
-    
+
       /// <summary>
       ///   Displays help.
       ///
@@ -97,6 +98,7 @@
         TextBuffer.AddTextToBuffer("drop");
         TextBuffer.AddTextToBuffer("inventory");
         TextBuffer.AddTextToBuffer("whereami");
-      }    
+      }
     }
   }
+
