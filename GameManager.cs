@@ -1,5 +1,6 @@
+
   //using System; //without this using line, it still works
-                  //within and outside of VSCode 
+                  //within and outside of VSCode
 
   namespace HeartbeatHunter
   {
@@ -47,7 +48,7 @@
       /// </summary>
       public static void StartGame()
       {
-        Player.GetCurrentLocation().Describe();
+        Player.GetCurrentRoom().Describe();
         TextBuffer.Display();
       }
 
@@ -63,7 +64,7 @@
         ClassePrincipale.GameIsOn = false;
 
         Console.Clear();
-        Console.WriteLine(TextUtilities.WordWrap(endingText, 
+        Console.WriteLine(TextUtilities.WordWrap(endingText,
                                                  Console.WindowWidth));
         Console.WriteLine("\nYou may now close this window.");
         Console.CursorVisible = false;
@@ -80,21 +81,21 @@
       /// </summary>
       public static void ApplyRules()
       {
-        //if ((Level.Rooms[0, 0].ProvideItem("Red Ball") != null) &&
-        //  (Level.Rooms[1, 0].ProvideItem("Blue Ball") != null) &&
-          //  (Level.Rooms[1, 1].ProvideItem("Yellow Ball") != null) &&
-            //  (Level.Rooms[0, 1].ProvideItem("Green Ball") != null))
-        //{
-         // EndGame ("Well done! You win!");
-        //}
+        if ((Level.Rooms[0, 0].ProvideItem("Red Ball") != null) &&
+          (Level.Rooms[1, 0].ProvideItem("Blue Ball") != null) &&
+            (Level.Rooms[1, 1].ProvideItem("Yellow Ball") != null) &&
+              (Level.Rooms[0, 1].ProvideItem("Green Ball") != null))
+        {
+          EndGame ("Well done! You win!");
+        }
 
         if (Player.GetInventoryItem("Key") != null)
         {
-          //Level.Rooms[0, 0].AddExit(Direction.South); //unlock door to the south in red room
-          //Level.Rooms[0, 0].Description = "You have entered the red room.";
+          Level.Rooms[0, 0].UnlockExit(Direction.South); //unlock door to the south in red room
+          Level.Rooms[0, 0].Description = "You have entered the red room.";
 
-          //Level.Rooms[0, 1].AddExit(Direction.North); //unlock door to the north in green room
-          //Level.Rooms[0, 1].Description = "You have entered the green room.";
+          Level.Rooms[0, 1].UnlockExit(Direction.North); //unlock door to the north in green room
+          Level.Rooms[0, 1].Description = "You have entered the green room.";
         }
 
         if (Player.PlayedMoves > 10)
@@ -102,7 +103,8 @@
           EndGame("You have used your 10 possible moves. Game is now over.");
         }
       }
-    
+
       #endregion
     }
   }
+
