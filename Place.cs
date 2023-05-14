@@ -134,7 +134,7 @@ namespace HeartbeatHunter
       {
         if (Exits.ContainsKey(direction))
         {
-          Console.WriteLine($"There is already an exit to the {direction}");
+          Console.WriteLine($"There is already an exit to the {direction}.");
           return;
         }
 
@@ -149,22 +149,20 @@ namespace HeartbeatHunter
       /// </summary>
       public void RemoveExit(string direction)
       {
-        if (this.exits.IndexOf(direction) != -1)
-          this.exits.Remove(direction);
+        if (!Exits.ContainsKey(direction))
+        {
+          Console.WriteLine($"There is no exit to the {direction}.");
+          return;
+        }
+
+        Exits.Remove(direction);
+        Console.WriteLine($"Exit to the {direction} removed.");
       }
 
       /// <summary>
       ///   Tells us if we can exit in this direction.
       /// </summary>
-      public bool TellIfExitAvailable(string direction)
-      {
-        foreach (Exit validExit in exits)
-        {
-          if (direction == validExit.Direction)
-            return true;
-        }
-        return false;
-      }
+      public bool IsExitAvailableInDirection(Direction direction) => Exits.ContainsKey(direction);
 
       #endregion
 
@@ -227,9 +225,9 @@ namespace HeartbeatHunter
       string message = "Possible Directions:";
       string underline = "".PadLeft(message.Length, '-');
 
-      if (this.exits.Count > 0)
+      if (this.Exits.Count > 0)
       {
-        foreach (Exit exitDirection in this.exits)
+        foreach (Exit exitDirection in this.Exits)
         {
           exitString += "[" + exitDirection.Direction + "]  ";
         }
@@ -250,13 +248,5 @@ namespace HeartbeatHunter
     Home,
     Shop,
     Restaurant
-  }
-
-  public enum Direction
-  {
-    North,
-    South,
-    East,
-    West
   }
 }

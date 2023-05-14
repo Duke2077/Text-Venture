@@ -48,7 +48,7 @@
       /// </summary>
       public static void StartGame()
       {
-        Player.GetCurrentRoom().Describe();
+        Player.GetCurrentPlace().Describe();
         TextBuffer.Display();
       }
 
@@ -91,10 +91,10 @@
 
         if (Player.GetInventoryItem("Key") != null)
         {
-          Level.Rooms[0, 0].UnlockExit(Direction.South); //unlock door to the south in red room
+          Level.Rooms[0, 0].AddExit(Direction.South); //unlock door to the south in red room
           Level.Rooms[0, 0].Description = "You have entered the red room.";
 
-          Level.Rooms[0, 1].UnlockExit(Direction.North); //unlock door to the north in green room
+          Level.Rooms[0, 1].AddExit(Direction.North); //unlock door to the north in green room
           Level.Rooms[0, 1].Description = "You have entered the green room.";
         }
 

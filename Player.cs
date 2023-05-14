@@ -22,6 +22,7 @@
 
       #region C# Properties
 
+      public static Place CurrentPlace { get; set; }
       /// <summary>
       /// Gets or sets the player's position in X.
       /// </summary>
@@ -93,11 +94,11 @@
       /// </summary>
       /// <param name="direction">direction to move towards</param>
       /// <returns>bool
-      public static void Move(string direction)
+      public static void Move(Direction direction)
       {
-        Room room = Player.GetCurrentRoom();
+        Place place = Player.GetCurrentPlace();
 
-        if (!room.TellIfExitAvailable(direction))
+        if (!place.IsExitAvailableInDirection(direction))
         {
           TextBuffer.AddTextToBuffer("It doesn't look like we can " +
             "move in that direction.");
@@ -121,7 +122,7 @@
             PosX--;
             break;
         }
-        Player.GetCurrentRoom().Describe();
+        Player.GetCurrentPlace().Describe();
       }
 
       /// <summary>
@@ -135,8 +136,8 @@
       /// <returns>The actual item.
       public static void PickUpItem(string itemName)
       {
-        Room room = Player.GetCurrentRoom();
-        Item item = room.ProvideItem(itemName);
+        Place place = Player.GetCurrentPlace();
+        Item item = place.ProvideItem(itemName);
 
         if (item != null)
         {
@@ -150,12 +151,12 @@
             return;
           }
 
-          room.Items.Remove(item);
+          place.Items.Remove(item);
           inventoryItems.Add(item); //Player.inventoryItems.Add(item);
           TextBuffer.AddTextToBuffer(item.PickUpText);
 
         } else
-          TextBuffer.AddTextToBuffer("There is no " + itemName + " in this room.");
+          TextBuffer.AddTextToBuffer("There is no " + itemName + " in this place.");
       }
 
       /// <summary>
@@ -167,15 +168,15 @@
       /// <param name="itemName">the item's textual name</param>
       public static void DropItem(string itemName)
       {
-        Room room = Player.GetCurrentRoom();
+        Place place = Player.GetCurrentPlace();
         Item item = Player.GetInventoryItem(itemName);
 
         if (item != null)
         {
           inventoryItems.Remove(item); //Player.inventoryItems.Remove (item);
-          room.Items.Add(item);
+          place.Items.Add(item);
           TextBuffer.AddTextToBuffer("The " + itemName
-                                     + " has been dropped into this room.");
+                                     + " has been dropped into this place.");
         } else
           TextBuffer.AddTextToBuffer("There is no " + itemName
                                      + " in your inventory.");
@@ -215,9 +216,10 @@
       ///
       ///   Provides us with the room we're in.
       /// </summary>
-      public static Room GetCurrentRoom()
+      public static Place GetCurrentPlace()
       {
-        return Level.Rooms[PosX, PosY];
+        //return Level.Rooms[PosX, PosY];
+        return Player.CurrentPlace;
       }
 
       /// <summary>

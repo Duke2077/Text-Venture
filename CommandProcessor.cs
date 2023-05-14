@@ -40,13 +40,13 @@
               ShowHelp();
               break;
             case "examine":
-              Player.GetCurrentRoom().Describe(arguments);
+              Player.GetCurrentPlace().Describe(arguments);
               break;
             case "move":
               Player.Move(arguments);
               break;
             case "look":
-              Player.GetCurrentRoom().Describe();
+              Player.GetCurrentPlace().Describe();
               break;
             case "pick up":
               Player.PickUpItem(arguments);
@@ -58,7 +58,7 @@
               Player.DisplayInventory();
               break;
             case "whereami":
-              Player.GetCurrentRoom().ShowRoomName();
+              Player.GetCurrentPlace().ShowRoomName();
               break;
             default:
               TextBuffer.AddTextToBuffer("Unrecognized command.");
