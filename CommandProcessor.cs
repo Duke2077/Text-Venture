@@ -25,9 +25,10 @@
         string command = TextUtilities.ExtractCommand(line);
         string arguments = TextUtilities.ExtractArguments(line);
 
-        if (Direction.IsValidDirection(command))
+        if (command.IsValidDirection())
         {
-          Player.Move(command);
+          Direction direction = (Direction)Enum.Parse(typeof(Direction), command, true);
+          Player.Move(direction);
         }
         else
         {
@@ -43,7 +44,8 @@
               Player.GetCurrentPlace().Describe(arguments);
               break;
             case "move":
-              Player.Move(arguments);
+              Enum.TryParse<Direction>(arguments, true, out var direction);
+              Player.Move(direction);
               break;
             case "look":
               Player.GetCurrentPlace().Describe();
@@ -58,7 +60,7 @@
               Player.DisplayInventory();
               break;
             case "whereami":
-              Player.GetCurrentPlace().ShowRoomName();
+              Player.GetCurrentPlace().ShowPlaceName();
               break;
             default:
               TextBuffer.AddTextToBuffer("Unrecognized command.");

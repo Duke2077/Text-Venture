@@ -12,9 +12,9 @@ namespace HeartbeatHunter
     public string Name { get; set; } /**< The name of the place */
     public string Description { get; set; } /**< Place's description  */
     public PlaceType PlaceType { get; set; } /**< The type of place */
-    public List<ExamineableElement> ExamineableElements { get; set; } = new List<ExamineableElements>(); /**< Examineable elements */
+    public List<ExamineableElement> ExamineableElements { get; set; } = new List<ExamineableElement>(); /**< Examineable elements */
     public List<Item> Items { get; set; } = new List<Item>(); /**< Items in room */
-    public Dictionary<Exit, Place> Exits { get; set; } = new Dictionary<Exit, Place>();
+    public List<Exit> Exits { get; set; } = new List<Exit>();
 
       #region Public Member Functions
 
@@ -39,62 +39,12 @@ namespace HeartbeatHunter
       TextBuffer.AddTextToBuffer(this.ProvideExitList());
     }
 
-      /// <summary>
-      /// Provides us with a description of an examineable element in this place
-      /// </summary>
-      public void Describe(string examineableElement)
-      {
-        if (examineableElement == "")
-        {
-          if (ExamineableElements.Count == 0)
-          {
-            TextBuffer.AddTextToBuffer("There's nothing to examine in this place.");
-            return;
-          }
-
-          TextBuffer.AddTextToBuffer("What do you want to examine?");
-          for (int i = 0; i < ExamineableElements.Count; i++)
-          {
-            TextBuffer.AddTextToBuffer($"{i + 1} - {ExamineableElements[i].Name}");
-          }
-          TextBuffer.Display();
-
-          int choice;
-          Console.Write("> ");
-          if (!Int32.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > ExamineableElements.Count)
-          {
-            TextBuffer.AddTextToBuffer("Invalid choice.");
-            return;
-          }
-          TextBuffer.AddTextToBuffer(ExamineableElements[choice - 1].Description);
-          return;
-        } //Si le joueur a seulement tapé "examine"
-
-        foreach (ExamineableElement element in ExamineableElements)
-        {
-          if (element.Name.ToLower() == examineableElement.ToLower())
-          {
-            TextBuffer.AddTextToBuffer(element.Description);
-            return;
-          }
-        }
-        TextBuffer.AddTextToBuffer($"There is no {examineableElement} in this place.");
-      }
-
-      /// <summary>
-      ///   Gives us a very brief "where you're at."
-      ///
-      ///   That's the name of the place.
-      /// </summary>
-      public void ShowPlaceName()
-      {
-        TextBuffer.AddTextToBuffer(this.Name);
-      }
-
-      /// <summary>
-      ///   Provides a list of everything that can be examined in this place
-      /// </summary>
-      public void Examine()
+    /// <summary>
+    /// Provides us with a description of an examineable element in this place
+    /// </summary>
+    public void Describe(string examineableElement)
+    {
+      if (examineableElement == "")
       {
         if (ExamineableElements.Count == 0)
         {
@@ -107,89 +57,152 @@ namespace HeartbeatHunter
         {
           TextBuffer.AddTextToBuffer($"{i + 1} - {ExamineableElements[i].Name}");
         }
-      }
+        TextBuffer.Display();
 
-      /// <summary>
-      ///   Tells us if it has an item.
-      ///
-      ///   We'll provide it with a textual name for the item.
-      /// </summary>
-      /// <param name="itemName">The name of the asked item</param>
-      /// <returns>The asked item.
-      public Item ProvideItem(string itemName)
-      {
-        foreach (Item item in this.Items)
+        int choice;
+        Console.Write("> ");
+        if (!Int32.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > ExamineableElements.Count)
         {
-          if (item.Name.ToLower() == itemName.ToLower())
-            return item;
+          TextBuffer.AddTextToBuffer("Invalid choice.");
+          return;
         }
-        return null;
+        TextBuffer.AddTextToBuffer(ExamineableElements[choice - 1].Description);
+        return;
+      } //Si le joueur a seulement tapé "examine"
+
+      foreach (ExamineableElement element in ExamineableElements)
+      {
+        if (element.Name.ToLower() == examineableElement.ToLower())
+        {
+          TextBuffer.AddTextToBuffer(element.Description);
+          return;
+        }
+      }
+      TextBuffer.AddTextToBuffer($"There is no {examineableElement} in this place.");
+    }
+
+    /// <summary>
+    ///   Gives us a very brief "where you're at."
+    ///
+    ///   That's the name of the place.
+    /// </summary>
+    public void ShowPlaceName()
+    {
+      TextBuffer.AddTextToBuffer(this.Name);
+    }
+
+    /// <summary>
+    ///   Provides a list of everything that can be examined in this place
+    /// </summary>
+    public void Examine()
+    {
+      if (ExamineableElements.Count == 0)
+      {
+        TextBuffer.AddTextToBuffer("There's nothing to examine in this place.");
+        return;
       }
 
-      /// <summary>
-      /// Adds a new exit to this place.
-      ///
-      /// And does it on the fly.
-      public void AddExit(Exit direction, Place destination)
+      TextBuffer.AddTextToBuffer("What do you want to examine?");
+      for (int i = 0; i < ExamineableElements.Count; i++)
       {
-        if (Exits.ContainsKey(direction))
-        {
+        TextBuffer.AddTextToBuffer($"{i + 1} - {ExamineableElements[i].Name}");
+      }
+    }
+
+    /// <summary>
+    ///   Tells us if it has an item.
+    ///
+    ///   We'll provide it with a textual name for the item.
+    /// </summary>
+    /// <param name="itemName">The name of the asked item</param>
+    /// <returns>The asked item.
+    public Item ProvideItem(string itemName)
+    {
+      foreach (Item item in this.Items)
+      {
+        if (item.Name.ToLower() == itemName.ToLower())
+          return item;
+      }
+      return null;
+    }
+
+    /// <summary>
+    /// Adds a new exit to this place.
+    ///
+    /// And does it on the fly.
+    public void AddExit(Direction direction, Place destination)
+    {
+      Exit exit = Exits.Find(e => e.Direction == direction);
+      if (exit != null)
+      {
           Console.WriteLine($"There is already an exit to the {direction}.");
           return;
-        }
-
-        Exits[direction] = destination;
-        destination.Exits[direction.Opposite()] = this;
       }
 
-      /// <summary>
-      ///   Removes an exit.
-      ///
-      ///   When a door gets locked.
-      /// </summary>
-      public void RemoveExit(string direction)
+      exit = new Exit(direction, destination);
+      Exits.Add(exit);
+      exit = new Exit(direction.Opposite(), this);
+      destination.Exits.Add(exit);
+    }
+
+    /// <summary>
+    ///   Removes an exit.
+    ///
+    ///   When a door gets locked.
+    /// </summary>
+    public void RemoveExit(Direction direction)
+    {
+      Exit exit = Exits.Find(e => e.Direction == direction);
+
+      if (exit == null)
       {
-        if (!Exits.ContainsKey(direction))
-        {
-          Console.WriteLine($"There is no exit to the {direction}.");
-          return;
-        }
-
-        Exits.Remove(direction);
-        Console.WriteLine($"Exit to the {direction} removed.");
+        Console.WriteLine($"There is no exit to the {direction}.");
+        return;
       }
 
-      /// <summary>
-      ///   Tells us if we can exit in this direction.
-      /// </summary>
-      public bool IsExitAvailableInDirection(Direction direction) => Exits.ContainsKey(direction);
+      Exits.Remove(exit);
+      Console.WriteLine($"Exit to the {direction} removed.");
+    }
+
+    /// <summary>
+    ///   Tells us if we can exit in this direction.
+    /// </summary>
+    public bool IsExitAvailableInDirection(Direction direction)
+    {
+      foreach (Exit exit in Exits)
+      {
+        if (exit.Direction == direction)
+          return true;
+      }
+      return false;
+    }
 
       #endregion
 
       #region Private Member Functions
 
-      /// <summary>
-      /// Provides us with a list of examineable elements in this place
-      /// </summary>
-      private string ProvideExamineableElementList()
-      {
-        string elementString = "";
-        string message = "Examineable Elements:";
-        string underline = "".PadLeft(message.Length, '-');
+    /// <summary>
+    /// Provides us with a list of examineable elements in this place
+    /// </summary>
+    private string ProvideExamineableElementList()
+    {
+      string elementString = "";
+      string message = "Examineable Elements:";
+      string underline = "".PadLeft(message.Length, '-');
 
-        if (this.ExamineableElements.Count > 0)
+      if (this.ExamineableElements.Count > 0)
+      {
+        foreach (ExamineableElement element in this.ExamineableElements)
         {
-          foreach (ExamineableElement element in this.ExamineableElements)
-          {
-            elementString += "[" + element.Name + "] ";
-          }
+          elementString += "[" + element.Name + "] ";
         }
-        else
-        {
-          elementString = "<none>";
-        }
-        return "\n" + message + "\n" + underline + "\n" + elementString;
       }
+      else
+      {
+        elementString = "<none>";
+      }
+      return "\n" + message + "\n" + underline + "\n" + elementString;
+    }
 
     /// <summary>
     ///   Provides us with a list of items in this place
@@ -225,11 +238,11 @@ namespace HeartbeatHunter
       string message = "Possible Directions:";
       string underline = "".PadLeft(message.Length, '-');
 
-      if (this.Exits.Count > 0)
+      if (Exits.Count > 0)
       {
-        foreach (Exit exitDirection in this.Exits)
+        foreach (Exit exit in Exits)
         {
-          exitString += "[" + exitDirection.Direction + "]  ";
+          exitString += "[" + exit.Direction + "]  ";
         }
       }
       else

@@ -1,42 +1,38 @@
-
-  //using System; //without this using line, it still works
-                  //within and outside of VSCode
-
-  namespace HeartbeatHunter
+namespace HeartbeatHunter
+{
+  /// <summary>
+  ///   The GameManager class.
+  ///
+  ///   Manages the game.
+  /// </summary>
+  static class GameManager
   {
-    /// <summary>
-    ///   The GameManager class.
-    ///
-    ///   Manages the game.
-    /// </summary>
-    static class GameManager
-    {
       #region Public Member Functions
 
-      /// <summary>
-      ///   Displays a title screen.
-      ///
-      ///   Displays introductory information about the game.
-      /// </summary>
-      public static void ShowTitleScreen()
-      {
-        Console.Clear();
-        Console.WriteLine(TextUtilities.WordWrap("*** HEARTBEAT HUNTER *** " +
-                                                 "A Text-based Adventure Game.\n",
+    /// <summary>
+    ///   Displays a title screen.
+    ///
+    ///   Displays introductory information about the game.
+    /// </summary>
+    public static void ShowTitleScreen()
+    {
+      Console.Clear();
+      Console.WriteLine(TextUtilities.WordWrap("*** HEARTBEAT HUNTER *** " +
+                                               "A Text-based Adventure Game.\n",
                                                  Console.WindowWidth));
 
-        Console.WriteLine(TextUtilities.WordWrap("Welcome to Heartbeat Hunter.",
+      Console.WriteLine(TextUtilities.WordWrap("Welcome to Heartbeat Hunter.",
                                                  Console.WindowWidth));
 
-        Console.WriteLine ("Info: You may type 'help' at any " +
-                           "time\nto see a list of available commands.");
-        Console.Write ("\nPress a key to begin");
+      Console.WriteLine ("Info: You may type 'help' at any " +
+                         "time\nto see a list of available commands.");
+      Console.Write ("\nPress a key to begin");
 
-        Console.CursorVisible = false;
-        Console.ReadKey();
-        Console.CursorVisible = true;
-        Console.Clear();
-      }
+      Console.CursorVisible = false;
+      Console.ReadKey();
+      Console.CursorVisible = true;
+      Console.Clear();
+    }
 
       /// <summary>
       ///   Displays the level.
@@ -72,39 +68,38 @@
         Console.ReadKey (true);
       }
 
-      /// <summary>
-      ///   Applies our game's rules.
-      ///
-      ///   Sees if the player, objects and rooms are arranged
-      ///   in a way that triggers something special like an
-      ///   ending or loss of life.
-      /// </summary>
-      public static void ApplyRules()
+    /// <summary>
+    ///   Applies our game's rules.
+    ///
+    ///   Sees if the player, objects and rooms are arranged
+    ///   in a way that triggers something special like an
+    ///   ending or loss of life.
+    /// </summary>
+    public static void ApplyRules()
+    {
+      //if ((Level.Rooms[0, 0].ProvideItem("Red Ball") != null) &&
+      // (Level.Rooms[1, 0].ProvideItem("Blue Ball") != null) &&
+      //  (Level.Rooms[1, 1].ProvideItem("Yellow Ball") != null) &&
+      //   (Level.Rooms[0, 1].ProvideItem("Green Ball") != null))
+      // {
+      //   EndGame ("Well done! You win!");
+      // }
+
+      // if (Player.GetInventoryItem("Key") != null)
+      // {
+      //   Level.Rooms[0, 0].AddExit(Direction.South); //unlock door to the south in red room
+      //   Level.Rooms[0, 0].Description = "You have entered the red room.";
+
+      //   Level.Rooms[0, 1].AddExit(Direction.North); //unlock door to the north in green room
+      //   Level.Rooms[0, 1].Description = "You have entered the green room.";
+      // }
+
+      if (Player.PlayedMoves > 10)
       {
-        if ((Level.Rooms[0, 0].ProvideItem("Red Ball") != null) &&
-          (Level.Rooms[1, 0].ProvideItem("Blue Ball") != null) &&
-            (Level.Rooms[1, 1].ProvideItem("Yellow Ball") != null) &&
-              (Level.Rooms[0, 1].ProvideItem("Green Ball") != null))
-        {
-          EndGame ("Well done! You win!");
-        }
-
-        if (Player.GetInventoryItem("Key") != null)
-        {
-          Level.Rooms[0, 0].AddExit(Direction.South); //unlock door to the south in red room
-          Level.Rooms[0, 0].Description = "You have entered the red room.";
-
-          Level.Rooms[0, 1].AddExit(Direction.North); //unlock door to the north in green room
-          Level.Rooms[0, 1].Description = "You have entered the green room.";
-        }
-
-        if (Player.PlayedMoves > 10)
-        {
-          EndGame("You have used your 10 possible moves. Game is now over.");
-        }
+        EndGame("You have used your 10 possible moves. Game is now over.");
       }
+    }
 
       #endregion
-    }
   }
-
+}

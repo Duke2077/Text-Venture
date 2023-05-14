@@ -58,8 +58,9 @@ namespace HeartbeatHunter
       Item item;
 
       /////////////////////////////////////////////////////
-      //Create the BEDROOM
-      bedroom = new Place();
+      //Create the PLACE
+      Place house = new House("Hero's house", PlaceType.Home);
+      Place bedroom = new Room("Hero's bedroom", PlaceType.Home);
 
       //Assign this room to location 0, 0
       //rooms[0, 0] = room;
@@ -68,7 +69,7 @@ namespace HeartbeatHunter
       bedroom.Name = "Hero's bedroom";
       bedroom.Description = "You are in the hero's bedroom. "
         + "There is a locked door to the south.";
-      bedroom.AddExit(Direction.East);
+      bedroom.AddExit(Direction.East, house);
 
       //Create the Storage examineable element
       element = new ExamineableElement();

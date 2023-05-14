@@ -13,8 +13,25 @@ namespace HeartbeatHunter
       West
     }
 
-  static class DirectionExtensions
+  static class StringExtensions
   {
+    /// <summary>
+    ///   Tells us if a direction name exists.
+    /// </summary>
+    public static bool IsValidDirection(this string direction)
+    {
+      switch (direction)
+      {
+        case "North":
+        case "South":
+        case "East":
+        case "West":
+          return true;
+        default:
+          return false;
+      }
+    }
+
     public static Direction Opposite(this Direction direction)
     {
       switch (direction)

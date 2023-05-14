@@ -100,8 +100,7 @@
 
         if (!place.IsExitAvailableInDirection(direction))
         {
-          TextBuffer.AddTextToBuffer("It doesn't look like we can " +
-            "move in that direction.");
+          TextBuffer.AddTextToBuffer($"It doesn't look like we can move {direction.ToString().ToLower()} from here.");
           return;
         }
 
